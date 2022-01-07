@@ -1,23 +1,23 @@
 ##############################################################################################
 #########################################################################################
 # This code runs a predator-prey-habitat model, based on wolf-deer dyanmics in Southeast Alaska
-# The code was produced by Sophie Gilbert (U Idaho), September 1, 2021
-# Input tables download: INSERT URL HERE
+# The code was produced by Sophie Gilbert (U Idaho), 1-7-2022
+# GitHub repository for code, data, etc., at https://github.com/sophielgilbert/alexander-archipelago-wolf
 
-# title         : Wolf_model_economics_Date.r
+# title         : aa-wolf-s2-pop-model.r
 # purpose       : Predicts changes in wolf and deer abundance and ecosystem services from 2015- 2045
 # data inputs	  : Tables of road density and deer carrying capacity for different scenarios developed in stakeholder meeting (see Gilbert et al. 2015)
 # author        : Sophie Gilbert
 # input         : Binary 16-bit signed integer big endian byte-order
-# output        : Prediction tables for Monte Carlo iteratinos of model runs for each scenario
-# additional	  : Seperate R code to build figures from model outpus is available at: INSERT URL HERE
+# output        : Prediction tables for Monte Carlo iterations of model runs for each scenario
+# additional	  : Seperate R code to build figures from model outputs is available at: https://github.com/sophielgilbert/alexander-archipelago-wolf
 
 # publication 1	: Gilbert, S., M. Lindberg, T. Haynes, M. Kissling, D. Albert. 2015. 
 #					Future population trends and drivers of change for Alexander Archipelago wolves on and near Prince of Wales Island, Alaska. 
 #					Final Report to the U.S. Fish & Wildlife Service, Anchorage, AK.
 #					Available at: https://www.fws.gov/r7/fisheries/endangered/pdf/aa_wolf/Gilbert%20et%20al%202015%20Population%20Model_final.pdf
 
-# publication 2	: Gilbert, S., M. Lindberg, T. Haynes, M. Kissling, D. Albert, D. Person. In Review. 
+# publication 2	: Gilbert, S., M. Lindberg, T. Haynes, M. Kissling, D. Albert, D. Person. In Press. 
 #					Future population trends and drivers of change for Alexander Archipelago wolves on and near Prince of Wales Island, Alaska. 
 #					In preparation for Frontiers in Ecology and Evolution, special edition on wolf management
 #					Available at: INSERT URL HERE ONCE PUBLISHED
@@ -38,16 +38,15 @@ library(abind)																				# this lets us bind arrays (like matrices) int
 # This requires input data for habitat variables such as deer K and road length/density
 # if these change over time, need to load that too
 
-Dir <- "~/Google Drive/Gilbert_Projects/Projects_Active/Wolves AA Manuscript/R_model/"   		# Where on the computer is main folder with input tabs?
-DirRoad <- paste(Dir, "roads", sep="")														# Where in main folder are the .csvs for roads for each scenario?  
-DirK <- paste(Dir, "deer_K", sep="")														  # Where in main folder are the .csvs for deer K "
-DirOut <- paste(Dir, "results", sep = "")													# Specify where you want to store results. Be careful here!
+DirRoad <- "./data-processed/roads/"														# Where in main folder are the .csvs for roads for each scenario?  
+DirK <- "./data-processed/deer-k/"														  # Where in main folder are the .csvs for deer K "
+DirOut <- "./results/"											 	                  # Specify where you want to store results. Be careful here!
 
 
 ########### 3. Read in conditions for scenarios and sensitivities ###########
 
 clim.tab <- c(0.07, 0.08, 0.10)																		# probs. of severe winter under clim. scenarios
-trap.tab <- c(0, 0.2, 0.3, 1.0)																		# caps on reported harvest *NOTE 9/1/21: now allowing 100% harvest
+trap.tab <- c(0, 0.2, 0.3, 1.0)																		# caps on reported harvest *NOTE 9/1/21: now allowing elimination of legal harvest
 packs.tab <- read.table(paste(Dir, "Pack_characteristics.csv", sep="/"), sep=",", header=T)			# pack characteristics
 
 roads.Base = read.table(paste(DirRoad, "Data.roads.base.csv", sep="/"), sep=",", header=T)			# roads for each pack and year, scenario base
