@@ -47,7 +47,7 @@ DirOut <- "./results/"											 	                  # Specify where you want to
 
 clim.tab <- c(0.07, 0.08, 0.10)																		# probs. of severe winter under clim. scenarios
 trap.tab <- c(0, 0.2, 0.3, 1.0)																		# caps on reported harvest *NOTE 9/1/21: now allowing elimination of legal harvest
-packs.tab <- read.table(paste(Dir, "Pack_characteristics.csv", sep="/"), sep=",", header=T)			# pack characteristics
+packs.tab <- read.table("./data/wolf-inputs/pack-characteristics.csv", sep=",", header=T)			# pack characteristics
 
 roads.Base = read.table(paste(DirRoad, "Data.roads.base.csv", sep="/"), sep=",", header=T)			# roads for each pack and year, scenario base
 roads.A = read.table(paste(DirRoad, "Data.roads.A.csv", sep="/"), sep=",", header=T)				# roads for each pack and year, scenario A
@@ -76,11 +76,11 @@ Scen.B 		= list(roads.B, K.B, clim.tab[2], trap.tab[2], TRUE, TRUE, 15)							# 
 Scen.C 		= list(roads.C, K.C, clim.tab[2], trap.tab[2], TRUE, TRUE, 15)							# Scenario C
 Scen.D 		= list(roads.D, K.D, clim.tab[3], trap.tab[3], TRUE, TRUE, 15)							# Scenario D
 Scen.E 		= list(roads.E, K.E, clim.tab[3], trap.tab[3], TRUE, TRUE, 15)							# Scenario E
-names(Scen.Base) <-names(Scen.A) <-names(Scen.B) <-names(Scen.C) <-names(Scen.D) <-names(Scen.E) <- names(Scen.F)<-Scen.names
+names(Scen.Base) <-names(Scen.A) <-names(Scen.B) <-names(Scen.C) <-names(Scen.D) <-names(Scen.E) <-Scen.names
 
 
 
-########### 5. Make sensitivity analyses ###########
+########### 5. Make sensitivity analyses combinations ###########
 
 Sensitivity.deer.harvest 	= list(roads.B, K.B, clim.tab[2], trap.tab[2], TRUE, FALSE, 15)			# Sensitivity to deer harvest being eliminated
 Sensitivity.roads.noch 		= list(roads.Base, K.B, clim.tab[2], trap.tab[2], TRUE, TRUE, 15)		# Sens., no change to roads
@@ -116,8 +116,8 @@ names(Sensitivity.wolftrap.none) <-names(Sensitivity.wolftrap.0) <- names(Sensit
 
 Sensitivity.wolfgone <- Scen.B
 
-Scen.to.run = list(Scen.Base, Scen.A, Scen.B, Scen.C, Scen.D, Scen.E, Scen.F)
-Scen.to.run.folds = c("ScenBase", "ScenA", "ScenB", "ScenC", "ScenD", "ScenE", "ScenF")
+Scen.to.run = list(Scen.Base, Scen.A, Scen.B, Scen.C, Scen.D, Scen.E)
+Scen.to.run.folds = c("ScenBase", "ScenA", "ScenB", "ScenC", "ScenD", "ScenE")
 
 Sens.to.run = list(	Sensitivity.deer.harvest,
 					Sensitivity.roads.noch,
@@ -187,14 +187,12 @@ Sens.to.run.folds <- c("SenHunt",
 						
 
 
-
-
 ########### Running the models #################################################
 
 ########### 6. Choose which individual scenario or sensitivity analysis to run #########
 
 
-Scenario = Sensitivity.wolfgone							# chose scenario to run
+Scenario = Sensitivity.wolfgone					# chose scenario to run
 Kind = "Sensitivities"									# Lets us choose where to store results
 Which.Scen = paste(Kind, "SenWolf/WolfGone", sep="/")	# for storing results; see end of code
 
@@ -208,11 +206,13 @@ Which.Scen = paste(Kind, "SenWolf/WolfGone", sep="/")	# for storing results; see
 
 
 
-##########  7. Or we can loop through a list of all the scenarios, running each in turn ####
+##########  7. Or we can loop through a list of all the scenarios or sensitivities, running each in turn ####
+# Rather than adding yet another loop to run through scenarios and sensitivities collectively
+# The user must manually set Kind = ... (below) to choose whether to run all scenarios OR all sensitivities
+# Outputs are saved automatically to the /results/scenarios or sensitivities  folders
 
-
-Kind = "Scenarios"                            # NEED TO MANUALLY CHOOSE HERE
-#Kind = "Sensitivities"
+#Kind = "Scenarios"                             # NEED TO MANUALLY CHOOSE HERE, run both lines
+Kind = "Sensitivities"                          # NEED TO MANUALLY CHOOSE HERE, run both lines
 
 if(Kind =="Scenarios"){													# chose the correct inputs (scenarios or sensitivities) ond output folders
 	To.run = Scen.to.run;
