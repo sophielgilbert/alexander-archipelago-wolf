@@ -1,9 +1,10 @@
 ### R code to create figures and calculate summary statistics for the Alexander Archipelago Wolf Project
-### SLG 2015
+### By Sophie Gilbert 
+### Last updated 1-1-2022
 
 
 
-### Libraries to be loaded (if already installed), otherwise, need to install from CRAN online
+#### Libraries to be loaded (if already installed), otherwise, need to install----
 
 
 rm(list = ls())				# clear r's memory of any stored objects (for instance, if we've been manually messing around with names in r). 
@@ -14,15 +15,15 @@ library(fields)
 library(colorRamps)
 
 
-# First define where to get the data
 
-Dir <- "~/Google Drive/Gilbert_Projects/Projects_Active/Wolves AA Manuscript/R_model/"   		# Where on the computer is main folder with input tabs?
-#Dir <- "/Volumes/HD_Sophie/HD_Users/sophiegilbert/Google Drive/Gilbert_Projects/Projects_Active/Wolves AA Manuscript/R_model/"
-Dir.scen =  paste(Dir, "Results", sep="")															# where within g drive is the scenario data?
-Dir.out = paste(Dir, "Results", "Tabs", sep="/")
+#### First define where to get the data------
+
+Dir.scen =  "./results/"															# where within g drive is the scenario data?
+Dir.out = "./results/tabs/"
 
 
-## A function to calculate probability of quasi-extinction, when different thresholds are chosen
+
+#### Create a function to calculate probability of quasi-extinction, when different thresholds are chosen----
 
 extinction.prob <- function(data, q.thresh){
 for(i in 1:ncol(data)){
@@ -73,63 +74,64 @@ arrows(dat.emp$year, dat.emp$popN.est, dat.emp$year, dat.emp$lcl, length=0.05, a
 arrows(dat.emp$year, dat.emp$popN.est, dat.emp$year, dat.emp$ucl, length=0.05, angle=90)
 
 
-############### First, Scenarios ##################
+
+############## Create scenarios results ###########################
 
 
-# Read in the data from scenario results
+## Read in the data from scenario results----
 
-wolf.base.s <- read.table(paste(Dir.scen, "Scenarios", "ScenBase", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-wolf.A.s <- read.table(paste(Dir.scen, "Scenarios", "ScenA", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.B.s <- read.table(paste(Dir.scen, "Scenarios", "ScenB", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.C.s <- read.table(paste(Dir.scen, "Scenarios", "ScenC", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.D.s <- read.table(paste(Dir.scen, "Scenarios", "ScenD", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.E.s <- read.table(paste(Dir.scen, "Scenarios", "ScenE", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.base.s <- read.table(paste(Dir.scen, "scenarios", "ScenBase", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+wolf.A.s <- read.table(paste(Dir.scen, "scenarios", "ScenA", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.B.s <- read.table(paste(Dir.scen, "scenarios", "ScenB", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.C.s <- read.table(paste(Dir.scen, "scenarios", "ScenC", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.D.s <- read.table(paste(Dir.scen, "scenarios", "ScenD", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.E.s <- read.table(paste(Dir.scen, "scenarios", "ScenE", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.base <- read.table(paste(Dir.scen, "Scenarios", "ScenBase", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-wolf.A <- read.table(paste(Dir.scen, "Scenarios", "ScenA", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.B <- read.table(paste(Dir.scen, "Scenarios", "ScenB", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.C <- read.table(paste(Dir.scen, "Scenarios", "ScenC", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.D <- read.table(paste(Dir.scen, "Scenarios", "ScenD", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.E <- read.table(paste(Dir.scen, "Scenarios", "ScenE", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.base <- read.table(paste(Dir.scen, "scenarios", "ScenBase", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+wolf.A <- read.table(paste(Dir.scen, "scenarios", "ScenA", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.B <- read.table(paste(Dir.scen, "scenarios", "ScenB", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.C <- read.table(paste(Dir.scen, "scenarios", "ScenC", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.D <- read.table(paste(Dir.scen, "scenarios", "ScenD", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.E <- read.table(paste(Dir.scen, "scenarios", "ScenE", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-deer.base <- read.table(paste(Dir.scen, "Scenarios", "ScenBase", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-deer.A <- read.table(paste(Dir.scen, "Scenarios", "ScenA", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.B <- read.table(paste(Dir.scen, "Scenarios", "ScenB", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.C <- read.table(paste(Dir.scen, "Scenarios", "ScenC", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.D <- read.table(paste(Dir.scen, "Scenarios", "ScenD", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.E <- read.table(paste(Dir.scen, "Scenarios", "ScenE", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.base <- read.table(paste(Dir.scen, "scenarios", "ScenBase", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+deer.A <- read.table(paste(Dir.scen, "scenarios", "ScenA", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.B <- read.table(paste(Dir.scen, "scenarios", "ScenB", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.C <- read.table(paste(Dir.scen, "scenarios", "ScenC", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.D <- read.table(paste(Dir.scen, "scenarios", "ScenD", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.E <- read.table(paste(Dir.scen, "scenarios", "ScenE", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-packs.base <- read.table(paste(Dir.scen, "Scenarios", "ScenBase", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-packs.A <- read.table(paste(Dir.scen, "Scenarios", "ScenA", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-packs.B <- read.table(paste(Dir.scen, "Scenarios", "ScenB", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-packs.C <- read.table(paste(Dir.scen, "Scenarios", "ScenC", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-packs.D <- read.table(paste(Dir.scen, "Scenarios", "ScenD", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-packs.E <- read.table(paste(Dir.scen, "Scenarios", "ScenE", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+packs.base <- read.table(paste(Dir.scen, "scenarios", "ScenBase", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+packs.A <- read.table(paste(Dir.scen, "scenarios", "ScenA", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+packs.B <- read.table(paste(Dir.scen, "scenarios", "ScenB", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+packs.C <- read.table(paste(Dir.scen, "scenarios", "ScenC", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+packs.D <- read.table(paste(Dir.scen, "scenarios", "ScenD", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+packs.E <- read.table(paste(Dir.scen, "scenarios", "ScenE", "extinct.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.base.monte <- read.table(paste(Dir.scen, "Scenarios", "ScenBase", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-wolf.A.monte <- read.table(paste(Dir.scen, "Scenarios", "ScenA", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.B.monte <- read.table(paste(Dir.scen, "Scenarios", "ScenB", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.C.monte <- read.table(paste(Dir.scen, "Scenarios", "ScenC", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.D.monte <- read.table(paste(Dir.scen, "Scenarios", "ScenD", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.E.monte <- read.table(paste(Dir.scen, "Scenarios", "ScenE", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.base.monte <- read.table(paste(Dir.scen, "scenarios", "ScenBase", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+wolf.A.monte <- read.table(paste(Dir.scen, "scenarios", "ScenA", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.B.monte <- read.table(paste(Dir.scen, "scenarios", "ScenB", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.C.monte <- read.table(paste(Dir.scen, "scenarios", "ScenC", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.D.monte <- read.table(paste(Dir.scen, "scenarios", "ScenD", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.E.monte <- read.table(paste(Dir.scen, "scenarios", "ScenE", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-hunt.base <- read.table(paste(Dir.scen, "Scenarios", "ScenBase", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-hunt.A <- read.table(paste(Dir.scen, "Scenarios", "ScenA", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.B <- read.table(paste(Dir.scen, "Scenarios", "ScenB", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.C <- read.table(paste(Dir.scen, "Scenarios", "ScenC", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.D <- read.table(paste(Dir.scen, "Scenarios", "ScenD", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.E <- read.table(paste(Dir.scen, "Scenarios", "ScenE", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.base <- read.table(paste(Dir.scen, "scenarios", "ScenBase", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+hunt.A <- read.table(paste(Dir.scen, "scenarios", "ScenA", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.B <- read.table(paste(Dir.scen, "scenarios", "ScenB", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.C <- read.table(paste(Dir.scen, "scenarios", "ScenC", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.D <- read.table(paste(Dir.scen, "scenarios", "ScenD", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.E <- read.table(paste(Dir.scen, "scenarios", "ScenE", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-browse.base <- read.table(paste(Dir.scen, "Scenarios", "ScenBase", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-browse.A <- read.table(paste(Dir.scen, "Scenarios", "ScenA", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.B <- read.table(paste(Dir.scen, "Scenarios", "ScenB", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.C <- read.table(paste(Dir.scen, "Scenarios", "ScenC", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.D <- read.table(paste(Dir.scen, "Scenarios", "ScenD", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.E <- read.table(paste(Dir.scen, "Scenarios", "ScenE", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.base <- read.table(paste(Dir.scen, "scenarios", "ScenBase", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+browse.A <- read.table(paste(Dir.scen, "scenarios", "ScenA", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.B <- read.table(paste(Dir.scen, "scenarios", "ScenB", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.C <- read.table(paste(Dir.scen, "scenarios", "ScenC", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.D <- read.table(paste(Dir.scen, "scenarios", "ScenD", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.E <- read.table(paste(Dir.scen, "scenarios", "ScenE", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
 
 
-#calculate percent change for deer and wolves
+### Calculate percent change for deer, wolves, hunting (browsing % change makes no sense)----
 
 d.p.base <- pct.change.end(deer.base)
 d.p.A <- pct.change.end(deer.A)
@@ -160,7 +162,7 @@ h.p.D <- pct.change.end(hunt.D)
 h.p.E <- pct.change.end(hunt.E)
 
 
-# Make scenario results tables to use and save
+### Make scenario results tables, deer, wolves, hunting, browsing, pack extinction ----
 
 d.scen.tab <- data.frame(Scen = c("base", "A", "B", "C", "D", "E"), 
 	Med.pct = c(d.p.base$Med.pct, d.p.A$Med.pct, d.p.B$Med.pct, d.p.C$Med.pct, d.p.D$Med.pct, d.p.E$Med.pct),
@@ -244,220 +246,219 @@ for(i in 1:length(q.range)){
 
 
 
-############### Then, Sensitivities ##################
 
 
-# Read in the data from sensitivity results
+
+############### Create sensitivity analysis results ##################
+
+## Read in the data from sensitivity results----
 
 # wolves, spring
 
-wolf.clim.low.s <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowLow", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-wolf.clim.mid.s <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMid", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.clim.max.s <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMax","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.clim.low.s <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowLow", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+wolf.clim.mid.s <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMid", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.clim.max.s <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMax","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.diet.9.5.s <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet9.5","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.diet.15.s <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet15","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.diet.20.5.s <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet20.5","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.diet.26.s <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet26","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.9.5.s <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet9.5","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.15.s <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet15","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.20.5.s <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet20.5","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.26.s <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet26","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.nohunt.s <- read.table(paste(Dir.scen, "Sensitivities", "SenHunt", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.nohunt.s <- read.table(paste(Dir.scen, "sensitivities", "SenHunt", "wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 wolf.hunt.s <- wolf.B.s
 
-wolf.K.base.s <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KBase","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.maxharvest.s <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMaxharvest","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.contharvest.s <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KContharvest","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.midharvest.s <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMidharvest","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.nochange.s <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KNochange","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.transition.s <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KTransition","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.base.s <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KBase","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.maxharvest.s <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMaxharvest","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.contharvest.s <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KContharvest","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.midharvest.s <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMidharvest","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.nochange.s <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KNochange","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.transition.s <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KTransition","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.roads.maxbuild.s <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxbuild","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.maxdecom.s <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxdecom","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.middecom.s <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMiddecom","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.nochange.s <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadNochange","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.plandecom.s <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadPlandecom","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.maxbuild.s <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxbuild","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.maxdecom.s <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxdecom","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.middecom.s <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMiddecom","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.nochange.s <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadNochange","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.plandecom.s <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadPlandecom","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.trap.0.s <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap0","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.20.s <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap20","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.30.s <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap30","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.none.s <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "TrapNone","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.100.s <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap100","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.gone.s <- read.table(paste(Dir.scen, "Sensitivities", "SenWolf", "WolfGone","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.0.s <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap0","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.20.s <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap20","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.30.s <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap30","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.none.s <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "TrapNone","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.100.s <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap100","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.gone.s <- read.table(paste(Dir.scen, "sensitivities", "SenWolf", "WolfGone","wolf.spring.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
 
 # wolves, fall
 
-wolf.clim.low <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowLow", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-wolf.clim.mid <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMid", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.clim.max <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMax","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.clim.low <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowLow", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+wolf.clim.mid <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMid", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.clim.max <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMax","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.diet.9.5 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet9.5","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.diet.15 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet15","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.diet.20.5 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet20.5","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.diet.26 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet26","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.9.5 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet9.5","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.15 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet15","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.20.5 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet20.5","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.26 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet26","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.nohunt <- read.table(paste(Dir.scen, "Sensitivities", "SenHunt", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.nohunt <- read.table(paste(Dir.scen, "sensitivities", "SenHunt", "wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 wolf.hunt <- wolf.B
 
-wolf.K.base <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KBase","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.maxharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMaxharvest","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.contharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KContharvest","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.midharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMidharvest","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.nochange <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KNochange","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.transition <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KTransition","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.base <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KBase","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.maxharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMaxharvest","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.contharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KContharvest","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.midharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMidharvest","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.nochange <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KNochange","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.transition <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KTransition","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.roads.maxbuild <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxbuild","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.maxdecom <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxdecom","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.middecom <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMiddecom","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.nochange <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadNochange","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.plandecom <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadPlandecom","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.maxbuild <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxbuild","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.maxdecom <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxdecom","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.middecom <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMiddecom","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.nochange <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadNochange","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.plandecom <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadPlandecom","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.trap.0 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap0","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.20 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap20","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.30 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap30","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.none <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "TrapNone","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.100 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap100","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.gone <- read.table(paste(Dir.scen, "Sensitivities", "SenWolf", "WolfGone","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.0 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap0","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.20 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap20","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.30 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap30","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.none <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "TrapNone","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.100 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap100","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.gone <- read.table(paste(Dir.scen, "sensitivities", "SenWolf", "WolfGone","wolf.fall.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
 
 
 
 # deer
 
-deer.clim.low <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowLow", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-deer.clim.mid <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMid", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.clim.max <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMax","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.clim.low <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowLow", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+deer.clim.mid <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMid", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.clim.max <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMax","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-deer.diet.9.5 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet9.5","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.diet.15 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet15","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.diet.20.5 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet20.5","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.diet.26 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet26","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.diet.9.5 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet9.5","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.diet.15 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet15","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.diet.20.5 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet20.5","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.diet.26 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet26","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-deer.nohunt <- read.table(paste(Dir.scen, "Sensitivities", "SenHunt", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.nohunt <- read.table(paste(Dir.scen, "sensitivities", "SenHunt", "deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 deer.hunt <- deer.B
 
-deer.K.base <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KBase","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.K.maxharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMaxharvest","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.K.contharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KContharvest","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.K.midharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMidharvest","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.K.nochange <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KNochange","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.K.transition <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KTransition","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.K.base <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KBase","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.K.maxharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMaxharvest","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.K.contharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KContharvest","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.K.midharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMidharvest","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.K.nochange <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KNochange","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.K.transition <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KTransition","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-deer.roads.maxbuild <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxbuild","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.roads.maxdecom <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxdecom","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.roads.middecom <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMiddecom","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.roads.nochange <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadNochange","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.roads.plandecom <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadPlandecom","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.roads.maxbuild <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxbuild","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.roads.maxdecom <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxdecom","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.roads.middecom <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMiddecom","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.roads.nochange <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadNochange","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.roads.plandecom <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadPlandecom","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-deer.trap.0 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap0","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.trap.20 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap20","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.trap.30 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap30","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.trap.none <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "TrapNone","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.trap.100 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap100","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-deer.gone <- read.table(paste(Dir.scen, "Sensitivities", "SenWolf", "WolfGone","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.trap.0 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap0","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.trap.20 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap20","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.trap.30 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap30","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.trap.none <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "TrapNone","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.trap.100 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap100","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+deer.gone <- read.table(paste(Dir.scen, "sensitivities", "SenWolf", "WolfGone","deer.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
 # Hunting
-hunt.clim.low <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowLow", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-hunt.clim.mid <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMid", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.clim.max <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMax","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.clim.low <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowLow", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+hunt.clim.mid <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMid", "hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.clim.max <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMax","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-hunt.diet.9.5 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet9.5","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.diet.15 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet15","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.diet.20.5 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet20.5","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.diet.26 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet26","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.diet.9.5 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet9.5","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.diet.15 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet15","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.diet.20.5 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet20.5","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.diet.26 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet26","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-hunt.K.base <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KBase","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.K.maxharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMaxharvest","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.K.contharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KContharvest","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.K.midharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMidharvest","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.K.nochange <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KNochange","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.K.transition <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KTransition","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.K.base <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KBase","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.K.maxharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMaxharvest","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.K.contharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KContharvest","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.K.midharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMidharvest","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.K.nochange <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KNochange","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.K.transition <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KTransition","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-hunt.roads.maxbuild <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxbuild","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.roads.maxdecom <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxdecom","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.roads.middecom <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMiddecom","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.roads.nochange <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadNochange","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.roads.plandecom <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadPlandecom","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.roads.maxbuild <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxbuild","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.roads.maxdecom <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxdecom","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.roads.middecom <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMiddecom","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.roads.nochange <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadNochange","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.roads.plandecom <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadPlandecom","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-hunt.trap.0 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap0","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.trap.20 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap20","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.trap.30 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap30","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.trap.none <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "TrapNone","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.trap.100 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap100","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-hunt.gone <- read.table(paste(Dir.scen, "Sensitivities", "SenWolf", "WolfGone","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.trap.0 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap0","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.trap.20 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap20","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.trap.30 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap30","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.trap.none <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "TrapNone","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.trap.100 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap100","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+hunt.gone <- read.table(paste(Dir.scen, "sensitivities", "SenWolf", "WolfGone","hunt.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
 
 # Browsing
-browse.clim.low <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowLow", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
-browse.clim.mid <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMid", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.clim.max <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMax","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.clim.low <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowLow", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	# read in scenarios results
+browse.clim.mid <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMid", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.clim.max <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMax","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-browse.diet.9.5 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet9.5","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.diet.9.5 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet9.5","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 browse.diet.15 <- browse.B
-browse.diet.20.5 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet20.5","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.diet.26 <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet26","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.diet.20.5 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet20.5","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.diet.26 <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet26","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-browse.nohunt <- read.table(paste(Dir.scen, "Sensitivities", "SenHunt", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.nohunt <- read.table(paste(Dir.scen, "sensitivities", "SenHunt", "browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 browse.hunt <- browse.B
 
-browse.K.base <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KBase","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.K.maxharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMaxharvest","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.K.contharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KContharvest","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.K.midharvest <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMidharvest","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.K.nochange <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KNochange","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.K.base <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KBase","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.K.maxharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMaxharvest","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.K.contharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KContharvest","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.K.midharvest <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMidharvest","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.K.nochange <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KNochange","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 browse.K.transition <- browse.B
 
-browse.roads.maxbuild <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxbuild","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.roads.maxdecom <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxdecom","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.roads.middecom <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMiddecom","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.roads.nochange <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadNochange","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.roads.maxbuild <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxbuild","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.roads.maxdecom <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxdecom","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.roads.middecom <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMiddecom","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.roads.nochange <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadNochange","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 browse.roads.plandecom <- browse.B
 
-browse.trap.0 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap0","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.trap.0 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap0","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 browse.trap.20 <- browse.B
-browse.trap.30 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap30","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.trap.none <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "TrapNone","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.trap.100 <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap100","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-browse.gone <- read.table(paste(Dir.scen, "Sensitivities", "SenWolf", "WolfGone","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-
-
-
+browse.trap.30 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap30","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.trap.none <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "TrapNone","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.trap.100 <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap100","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+browse.gone <- read.table(paste(Dir.scen, "sensitivities", "SenWolf", "WolfGone","browse.pack.perc.mn.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
 # wolf extinction stuff
 
-wolf.clim.low.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowLow", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	
-wolf.clim.mid.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMid", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.clim.max.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenClimate", "SnowMax","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.clim.low.monte <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowLow", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)	
+wolf.clim.mid.monte <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMid", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.clim.max.monte <- read.table(paste(Dir.scen, "sensitivities", "SenClimate", "SnowMax","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.diet.9.5.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet9.5","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.diet.15.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet15","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.diet.20.5.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet20.5","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.diet.26.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenDiet", "Diet26","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.9.5.monte <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet9.5","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.15.monte <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet15","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.20.5.monte <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet20.5","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.diet.26.monte <- read.table(paste(Dir.scen, "sensitivities", "SenDiet", "Diet26","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.nohunt.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenHunt", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.nohunt.monte <- read.table(paste(Dir.scen, "sensitivities", "SenHunt", "wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 wolf.hunt.monte <- wolf.B.monte
 
-wolf.K.base.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KBase","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.maxharvest.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMaxharvest","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.contharvest.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KContharvest","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.midharvest.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KMidharvest","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.nochange.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KNochange","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.K.transition.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenK", "KTransition","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.base.monte <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KBase","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.maxharvest.monte <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMaxharvest","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.contharvest.monte <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KContharvest","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.midharvest.monte <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KMidharvest","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.nochange.monte <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KNochange","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.K.transition.monte <- read.table(paste(Dir.scen, "sensitivities", "SenK", "KTransition","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.roads.maxbuild.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxbuild","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.maxdecom.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMaxdecom","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.middecom.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadMiddecom","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.nochange.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadNochange","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.roads.plandecom.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenRoads", "RoadPlandecom","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.maxbuild.monte <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxbuild","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.maxdecom.monte <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMaxdecom","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.middecom.monte <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadMiddecom","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.nochange.monte <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadNochange","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.roads.plandecom.monte <- read.table(paste(Dir.scen, "sensitivities", "SenRoads", "RoadPlandecom","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
-wolf.trap.0.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap0","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.20.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap20","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.30.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap30","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.none.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "TrapNone","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.trap.100.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenTrap", "Trap100","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
-wolf.gone.monte <- read.table(paste(Dir.scen, "Sensitivities", "SenWolf", "WolfGone","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.0.monte <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap0","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.20.monte <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap20","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.30.monte <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap30","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.none.monte <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "TrapNone","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.trap.100.monte <- read.table(paste(Dir.scen, "sensitivities", "SenTrap", "Trap100","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+wolf.gone.monte <- read.table(paste(Dir.scen, "sensitivities", "SenWolf", "WolfGone","wolf.spring.monte.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
 
-#calculate percent change for deer and wolves
+### calculate percent change for deer, wolves, hunting (browsing % change makes no sense)----
 
 d.p.clim.low <- pct.change.end(deer.clim.low)
 d.p.clim.mid <- pct.change.end(deer.clim.mid)
@@ -491,7 +492,6 @@ d.p.trap.none <- pct.change.end(deer.trap.none)
 d.p.trap.100 <- pct.change.end(deer.trap.100)
 d.p.gone <- pct.change.end(deer.gone)
 
-#####
 w.p.clim.low <- pct.change.end(wolf.clim.low)
 w.p.clim.mid <- pct.change.end(wolf.clim.mid)
 w.p.clim.max <- pct.change.end(wolf.clim.max)
@@ -524,7 +524,6 @@ w.p.trap.none <- pct.change.end(wolf.trap.none)
 w.p.trap.100 <- pct.change.end(wolf.trap.100)
 w.p.gone <- pct.change.end(wolf.gone)
 
-#####
 w.p.clim.low.s <- pct.change.end(wolf.clim.low.s)
 w.p.clim.mid.s <- pct.change.end(wolf.clim.mid.s)
 w.p.clim.max.s <- pct.change.end(wolf.clim.max.s)
@@ -557,7 +556,6 @@ w.p.trap.none.s <- pct.change.end(wolf.trap.none.s)
 w.p.trap.100.s <- pct.change.end(wolf.trap.100.s)
 w.p.gone.s <- pct.change.end(wolf.gone.s)
 
-####
 h.p.clim.low <- pct.change.end(hunt.clim.low)
 h.p.clim.mid <- pct.change.end(hunt.clim.mid)
 h.p.clim.max <- pct.change.end(hunt.clim.max)
@@ -566,7 +564,6 @@ h.p.diet.9.5 <- pct.change.end(hunt.diet.9.5)
 h.p.diet.15 <- pct.change.end(hunt.diet.15)
 h.p.diet.20.5 <- pct.change.end(hunt.diet.20.5)
 h.p.diet.26 <- pct.change.end(hunt.diet.26)
-
 
 h.p.K.base <- pct.change.end(hunt.K.base)
 h.p.K.maxharvest <- pct.change.end(hunt.K.maxharvest)
@@ -588,6 +585,7 @@ h.p.trap.none <- pct.change.end(hunt.trap.none)
 h.p.trap.100 <- pct.change.end(hunt.trap.100)
 h.p.gone <- pct.change.end(hunt.gone)
 
+### create results table, deer sensitivity to parms ----
 
 d.climate.sens.tab <- data.frame(Sen = c("clim.low", "clim.mid" ,"clim.max"), 
 	Med.pct = c(d.p.clim.low$Med.pct, d.p.clim.mid$Med.pct, d.p.clim.max$Med.pct),
@@ -640,7 +638,8 @@ d.trap.sens.tab <- data.frame(Sen = c("TrapNone", "Trap0" ,"Trap20", "Trap30", "
 
 
 
-##### wolves, fall #####
+
+### create results table, wolf sensitivity to parms, fall ----
 
 w.climate.sens.tab <- data.frame(Sen = c("clim.low", "clim.mid" ,"clim.max"), 
 	Med.pct = c(w.p.clim.low$Med.pct, w.p.clim.mid$Med.pct, w.p.clim.max$Med.pct),
@@ -692,7 +691,9 @@ w.trap.sens.tab <- data.frame(Sen = c("TrapNone", "Trap0" ,"Trap20", "Trap30", "
 	Ucl = c(wolf.trap.none$ucl[31], wolf.trap.0$ucl[31], wolf.trap.20$ucl[31], wolf.trap.30$ucl[31], wolf.trap.100$ucl[31]))
 
 
-### wolves, spring
+
+
+### create results table, wolf sensitivity to parms, spring----
 
 w.climate.sens.tab.s <- data.frame(Sen = c("clim.low", "clim.mid" ,"clim.max"), 
 	Med.pct = c(w.p.clim.low.s$Med.pct, w.p.clim.mid.s$Med.pct, w.p.clim.max.s$Med.pct),
@@ -743,7 +744,8 @@ w.trap.sens.tab.s <- data.frame(Sen = c("TrapNone", "Trap0" ,"Trap20", "Trap30",
 	Ucl = c(wolf.trap.none.s$ucl[31], wolf.trap.0.s$ucl[31], wolf.trap.20.s$ucl[31], wolf.trap.30.s$ucl[31], wolf.trap.30.s$ucl[31]))
 
 
-##### Hunt sensitivity tabs
+
+### create results table, hunt sensitivity to parms ----
 
 h.climate.sens.tab <- data.frame(Sen = c("clim.low", "clim.mid" ,"clim.max"), 
 	Med.pct = c(h.p.clim.low$Med.pct, h.p.clim.mid$Med.pct, h.p.clim.max$Med.pct),
@@ -788,7 +790,8 @@ h.trap.sens.tab <- data.frame(Sen = c("TrapNone", "Trap0" ,"Trap20", "Trap30", "
 	Ucl = c(hunt.trap.none$ucl[31], hunt.trap.0$ucl[31], hunt.trap.20$ucl[31], hunt.trap.30$ucl[31], hunt.trap.100$ucl[31], hunt.gone$ucl[31]))
 
 
-##### Browse sensitivity tabs #####
+
+### create results table, browse sensitivity to parms #####
 
 b.climate.sens.tab <- data.frame(Sen = c("clim.low", "clim.mid" ,"clim.max"),  
 	Med = c(browse.clim.low$med[31], browse.clim.mid$med[31], browse.clim.max$med[31]),
@@ -824,7 +827,7 @@ b.trap.sens.tab <- data.frame(Sen = c("TrapNone", "Trap0" ,"Trap20", "Trap30", "
 
 
 
-##### calculate extinction probabilities for a range of quasi-extinction thresholds
+### calculate extinction probabilities for a range of quasi-extinction thresholds----
 
 q.range = seq(0, 60, 1)
 
@@ -930,10 +933,11 @@ for(i in 1:length(q.range)){
 
 
 
-#################################################### write the results to file ##########################################
 
 
-##### Scenarios
+############### Write the results to file #############################
+
+## scenarios----
 
 write.table(w.scen.tab, paste(Dir.out, "wolf.scen.tab.fall.csv", sep='/'), sep=",", row.names=F)
 write.table(w.scen.tab.s, paste(Dir.out, "wolf.scen.tab.spring.csv", sep='/'), sep=",", row.names=F)
@@ -950,7 +954,7 @@ write.table(ext.D, paste(Dir.out, "wolf.extinct.D.csv", sep='/'), sep=",", row.n
 write.table(ext.E, paste(Dir.out, "wolf.extinct.E.csv", sep='/'), sep=",", row.names=F)
 
 
-##### Sensitivities
+## sensitivities----
 
 write.table(w.climate.sens.tab, paste(Dir.out, "wolf.climate.sens.csv", sep='/'), sep=",", row.names=F)
 write.table(w.climate.sens.tab.s, paste(Dir.out, "wolf.climate.sens.spring.csv", sep='/'), sep=",", row.names=F)
@@ -1020,12 +1024,14 @@ write.table(ext.trap.100, paste(Dir.out, "wolf.extinct.trap.100.csv", sep='/'), 
 
 
 
-################################################### Finally, let's make some figures! ###################################################################
 
 
-######## Scenarios plots
+############### Finally, let's make some figures! ###################
 
-#### Results through time
+
+## Scenarios plots----
+
+### Figure 3. Result probability distributions, etc., at end of 30 yrs----
 
 name.arg = c("No New Actions", "Scenario A", "Scenario B", "Scenario C", "Scenario D", "Scenario E")
 col1 = "gray20"
@@ -1040,7 +1046,8 @@ col9 = "salmon2"
 col10 = "olivegreen2"
 
 
-quartz(width=7, height=4.75)
+#quartz(width=7, height=4.75)
+pdf("./results/figs/figure-3.pdf", width = 7.4, height = 5)
 
 par(mfrow=c(2,3), mar=c(4,4.1,4,2.9)+.1)
 
@@ -1111,74 +1118,78 @@ plot(wolf.base$year, wolf.base$mean, col="transparent", xaxt="null", yaxt="null"
 
 legend(2015, 200, legend=name.arg, box.col="transparent", lwd=c(rep(lwd,6),1), lty=c(rep(lty, 6), 4), col=c(col2, col3, col4, col5, col6, col7, "dodgerblue"))
 
+dev.off()
 
 
 
 
 
-### now barplots of deer and wolf change in 2045, side by side
+### Figure 4. Barplots of deer and wolf change in 2045, side by side ----
 
-quartz(width=6, height=7)
-par(mfrow=c(2, 1), oma= c(0,7,0,0), cex=0.8)
+#quartz(width=3.5, height=6)
+pdf("./results/figs/figure-4.pdf", width = 3.5, height = 6)
+par(mfrow=c(2, 1), oma= c(1,1,0,0))
 
 
 wolf.col = "grey70"
 deer.col = "saddlebrown"
 #quartz(width=6, height=4)
-par(mar=c(4,4,4,5)+.1)
+par(mar=c(4,4,2,0)+.1)
 
 b <- barplot(rbind(w.scen.tab$Med.pct*100, d.scen.tab$Med.pct*100), beside=T, col=c(wolf.col, deer.col), ylim=c(-100, 250), ylab="", las=1)
-axis(1, labels=F, tick=F)
+axis(1, labels=F, tick=F, cex = 0.8)
 #text(x=colMeans(b), y=-115, srt= 60, adj = 1, labels= name.arg[1:6], xpd=T)
 arrows(b, rbind(w.scen.tab$Med.pct*100, d.scen.tab$Med.pct*100), b, rbind(w.scen.tab$Lcl.pct*100, d.scen.tab$Lcl.pct*100), angle=90, length=0.05)
 arrows(b, rbind(w.scen.tab$Med.pct*100, d.scen.tab$Med.pct*100), b, rbind(w.scen.tab$Ucl.pct*100, d.scen.tab$Ucl.pct*100), angle=90, length=0.05)
 legend(6, 250, legend=c("Wolf abundance", "Deer abundance"), fill=c(wolf.col, deer.col), box.col="transparent", cex=0.8)
-mtext("a", at = -2, line = 2)
+mtext("a", at = -1, line = 1)
 
 ### now barplots of hunting and browsing change in 2045, side by side
 
 hunt.col =  "salmon"
-browse.col = "darkolivegreen4"
+browse.col = "darkolivegreen"
 #quartz(width=6, height=4)
-par(mar=c(10,4,1,5)+.1)
+par(mar=c(7,4,0,0)+.1)
 
 b <- barplot(rbind(b.scen.tab$Med*100, h.scen.tab$Med.pct*100), beside=T, col=c(browse.col, hunt.col), ylim=c(-100, 100), ylab="", las=1)
-axis(1, labels=F, tick=F)
+axis(1, labels=F, tick=F, cex = 0.8)
 text(x=colMeans(b), y=-115, srt= 60, adj = 1, labels= name.arg[1:6], xpd=T)
 arrows(b, rbind(b.scen.tab$Med*100, h.scen.tab$Med.pct*100), b, rbind(b.scen.tab$Lcl*100, h.scen.tab$Lcl.pct*100), angle=90, length=0.05)
 arrows(b, rbind(b.scen.tab$Med*100, h.scen.tab$Med.pct*100), b, rbind(b.scen.tab$Ucl*100, h.scen.tab$Ucl.pct*100), angle=90, length=0.05)
-legend(6, 100, legend=c("Browse impacted wolf ranges", "Change in deer harvested"), fill=c(browse.col, hunt.col), box.col="transparent", cex=0.8)
-mtext("b", at = -2, line = 2)
+legend(1, 100, legend=c("Browse impacted wolf ranges", "Change in deer harvested"), fill=c(browse.col, hunt.col), box.col="transparent", cex=0.8)
+mtext("b", at = -1, line = 1)
+mtext("Percent (%)", side=2, line=0, outer=TRUE)
 
-mtext("Percent (%)", side=2, line=1, outer=TRUE)
+dev.off()
 
+### Figure S1. Sensitivities ----
 
-############### Sensitivities ####
-
-Tab.pert = read.table(paste(Dir.scen, "Sensitivities","Sensitivity perturbation amounts.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
+Tab.pert = read.table(paste(Dir.scen, "sensitivities","Sensitivity perturbation amounts.csv", sep="/"), sep=",", header=T, stringsAsFactors=F)
 
 ## First, abundance of wolf and deer sensitivities
 
-quartz(width=10, height=7)
-par(mar=c(6.75,2,3.5,1)+.1, mfrow=c(2,3), oma= c(0,3,0,0), las=1)
+#quartz(width=7.4, height=5)
+pdf("./results/figs/figure-s1.pdf", width = 7.4, height = 5)
+
+par(mar=c(6.75,2,3.5,1)+.1, mfrow=c(2,3), oma= c(0,3,0,0))
 max.group=6
 arrow.length = 0.02
 ylim=c(-180, 450)
-y = -110
+y = -150
 
-name.arg = c("Steady K", "No future harvest", "*Transition SG", "Continued OG", "Increased OG", "Max OG")
+name.arg = c("Restore", "No future harvest", "*Transition SG", "Continued OG", "Increased OG", "Max OG")
 b <- barplot(rbind(w.K.sens.tab.s$Med.pct*100, d.K.sens.tab$Med.pct*100), beside=T, col=c(wolf.col, "saddlebrown"), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
-axis(1, labels=F, tick=F)
+axis(1, labels=F, tick=F, las=1)
 text(x=colMeans(b), y = y, srt= 45, adj = 1, labels= name.arg[1:6], xpd=T)
 arrows(b, rbind(w.K.sens.tab.s$Med.pct*100, d.K.sens.tab$Med.pct*100), b, rbind(w.K.sens.tab.s$Lcl.pct*100, d.K.sens.tab$Lcl.pct*100), angle=90, length=arrow.length)
 arrows(b, rbind(w.K.sens.tab.s$Med.pct*100, d.K.sens.tab$Med.pct*100), b, rbind(w.K.sens.tab.s$Ucl.pct*100, d.K.sens.tab$Ucl.pct*100), angle=90, length=arrow.length)
 mtext("a", at = -2, line = 2)
-legend(6, 300, legend=c("Wolf", "Deer"), fill=c(wolf.col, "saddlebrown"), box.col="black")
+legend(4, 400, legend=c("Wolf abundance", "Deer abundance"), fill=c(wolf.col, "saddlebrown"), box.col="transparent")
 
 
 name.arg = c("Max decom", "Mid decom","*Planned decom", "No change", "Construction")
 b <- barplot(rbind(w.roads.sens.tab.s$Med.pct*100, d.roads.sens.tab$Med.pct*100), beside=T, col=c(wolf.col, "saddlebrown"), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
-axis(1, labels=F, tick=F)
+axis(1, labels=F, tick=F, las=1)
 text(x=colMeans(b), y = y, srt= 45, adj = 1, labels= name.arg[1:6], xpd=T)
 arrows(b, rbind(w.roads.sens.tab.s$Med.pct*100, d.roads.sens.tab$Med.pct*100), b, rbind(w.roads.sens.tab.s$Lcl.pct*100, d.roads.sens.tab$Lcl.pct*100), angle=90, length=arrow.length)
 arrows(b, rbind(w.roads.sens.tab.s$Med.pct*100, d.roads.sens.tab$Med.pct*100), b, rbind(w.roads.sens.tab.s$Ucl.pct*100, d.roads.sens.tab$Ucl.pct*100), angle=90, length=arrow.length)
@@ -1186,7 +1197,7 @@ mtext("b", at = -2, line = 2)
 
 name.arg = c("Low freq.", "*Ave. freq.", "High freq.")
 b <- barplot(rbind(w.climate.sens.tab.s$Med.pct*100, d.climate.sens.tab$Med.pct*100), beside=T, col=c(wolf.col, "saddlebrown"), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
-axis(1, labels=F, tick=F)
+axis(1, labels=F, tick=F, las=1)
 text(x=colMeans(b), y = y, srt= 45, adj = 1, labels= name.arg[1:6], xpd=T)
 arrows(b, rbind(w.climate.sens.tab.s$Med.pct*100, d.climate.sens.tab$Med.pct*100), b, rbind(w.climate.sens.tab.s$Lcl.pct*100, d.climate.sens.tab$Lcl.pct*100), angle=90, length=arrow.length)
 arrows(b, rbind(w.climate.sens.tab.s$Med.pct*100, d.climate.sens.tab$Med.pct*100), b, rbind(w.climate.sens.tab.s$Ucl.pct*100, d.climate.sens.tab$Ucl.pct*100), angle=90, length=arrow.length)
@@ -1194,7 +1205,7 @@ mtext("c", at = -2, line = 2)
 
 name.arg = c("9.5 deer/yr", "*15 deer/yr", "20.5 deer/yr", "26 deer/yr")
 b <- barplot(rbind(w.diet.sens.tab.s$Med.pct*100, d.diet.sens.tab$Med.pct*100), beside=T, col=c(wolf.col, "saddlebrown"), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
-axis(1, labels=F, tick=F)
+axis(1, labels=F, tick=F, las=1)
 text(x=colMeans(b), y = y, srt= 45, adj = 1, labels= name.arg[1:6], xpd=T)
 arrows(b, rbind(w.diet.sens.tab.s$Med.pct*100, d.diet.sens.tab$Med.pct*100), b, rbind(w.diet.sens.tab.s$Lcl.pct*100, d.diet.sens.tab$Lcl.pct*100), angle=90, length=arrow.length)
 arrows(b, rbind(w.diet.sens.tab.s$Med.pct*100, d.diet.sens.tab$Med.pct*100), b, rbind(w.diet.sens.tab.s$Ucl.pct*100, d.diet.sens.tab$Ucl.pct*100), angle=90, length=arrow.length)
@@ -1202,7 +1213,7 @@ mtext("d", at = -2, line = 2)
 
 name.arg = c("No harvest", "0% legal", "*20% legal cap", "30% legal cap", "No limit", "Extinct")
 b <- barplot(rbind(c(w.trap.sens.tab.s$Med.pct*100, -100), d.trap.sens.tab$Med.pct*100), beside=T, col=c(wolf.col, "saddlebrown"), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
-axis(1, labels=F, tick=F)
+axis(1, labels=F, tick=F, las=1)
 text(x=colMeans(b), y=y, srt= 45, adj = 1, labels= name.arg[1:7], xpd=T)
 arrows(b, rbind(c(w.trap.sens.tab.s$Med.pct*100, NA), d.trap.sens.tab$Med.pct*100), b, rbind(c(w.trap.sens.tab.s$Lcl.pct*100, NA), d.trap.sens.tab$Lcl.pct*100), angle=90, length=arrow.length)
 arrows(b, rbind(c(w.trap.sens.tab.s$Med.pct*100, NA), d.trap.sens.tab$Med.pct*100), b, rbind(c(w.trap.sens.tab.s$Ucl.pct*100, NA), d.trap.sens.tab$Ucl.pct*100), angle=90, length=arrow.length)
@@ -1210,35 +1221,40 @@ mtext("e", at = -2, line = 2)
 
 name.arg = c("Hunt no deer", "*Hunt regular")
 b <- barplot(rbind(w.hunt.sens.tab.s$Med.pct*100, d.hunt.sens.tab$Med.pct*100), beside=T, col=c(wolf.col, "saddlebrown"), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
-axis(1, labels=F, tick=F)
+axis(1, labels=F, tick=F, las=1)
 text(x=colMeans(b), y = y, srt= 45, adj = 1, labels= name.arg[1:6], xpd=T)
 arrows(b, rbind(w.hunt.sens.tab.s$Med.pct*100, d.hunt.sens.tab$Med.pct*100), b, rbind(w.hunt.sens.tab.s$Lcl.pct*100, d.hunt.sens.tab$Lcl.pct*100), angle=90, length=arrow.length)
 arrows(b, rbind(w.hunt.sens.tab.s$Med.pct*100, d.hunt.sens.tab$Med.pct*100), b, rbind(w.hunt.sens.tab.s$Ucl.pct*100, d.hunt.sens.tab$Ucl.pct*100), angle=90, length=arrow.length)
 mtext("f", at = -2, line = 2)
 
-mtext("Change in abundance (%) by 2045", side=2, line=1, outer=TRUE)
+mtext("Change in abundance (%)", side=2, line=1, outer=TRUE)
+dev.off()
 
-### Next, browse and hunting opportunity sensitivities
+### Figure S2. Ecosystem service (browse and hunting) sensitivities ----
 
-quartz(width=10, height=7)
-par(mar=c(8,2,3.5,1)+.1, mfrow=c(2,3), oma= c(0,5,0,0))
+#quartz(width=7.4, height=5)
+pdf("./results/figs/figure-s2.pdf", width = 7.4, height = 5)
+
+par(mar=c(6.75,3,3.5,0)+.1, mfrow=c(2,3), oma= c(0,3,0,0))
+
+#par(mar=c(8,2,3.5,1)+.1, mfrow=c(2,3), oma= c(0,5,0,0))
 max.group=6
 arrow.length = 0.02
 ylim=c(-100, 100)
 y=-100
 
-name.arg = c("Steady K", "No future harvest", "*Transition SG", "Continued OG", "Increased OG", "Max OG")
-b <- barplot(rbind(b.K.sens.tab$Med*100, h.K.sens.tab$Med.pct*100), beside=T, col=c(browse.col, hunt.col), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
+name.arg = c("Restore", "No future harvest", "*Transition SG", "Continued OG", "Increased OG", "Max OG")
+b <- barplot(rbind(b.K.sens.tab$Med*100, h.K.sens.tab$Med.pct*100), beside=T, col=c(browse.col, hunt.col), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1, las = 1)
 axis(1, labels=F, tick=F)
 text(x=colMeans(b), y = y, srt= 45, adj = 1, labels= name.arg[1:6], xpd=T)
 arrows(b, rbind(b.K.sens.tab$Med*100, h.K.sens.tab$Med.pct*100), b, rbind(b.K.sens.tab$Lcl*100, h.K.sens.tab$Lcl.pct*100), angle=90, length=arrow.length)
 arrows(b, rbind(b.K.sens.tab$Med*100, h.K.sens.tab$Med.pct*100), b, rbind(b.K.sens.tab$Ucl*100, h.K.sens.tab$Ucl.pct*100), angle=90, length=arrow.length)
 mtext("a", at = -2, line = 2)
-legend(2, 100, legend=c("Areas with browsing impacts", "Deer harvested"), fill=c(browse.col, hunt.col), box.col="black")
+legend(1, 100, legend=c("Browse impacted pack ranges", "Change in deer harvested"), fill=c(browse.col, hunt.col), box.col="transparent")
 
 
 name.arg = c("Max decom", "Mid decom","*Planned decom", "No change", "Construction")
-b <- barplot(rbind(b.roads.sens.tab$Med*100, h.roads.sens.tab$Med.pct*100), beside=T, col=c(browse.col, hunt.col), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
+b <- barplot(rbind(b.roads.sens.tab$Med*100, h.roads.sens.tab$Med.pct*100), beside=T, col=c(browse.col, hunt.col), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1, las = 1)
 axis(1, labels=F, tick=F)
 text(x=colMeans(b), y = y, srt= 45, adj = 1, labels= name.arg[1:6], xpd=T)
 arrows(b, rbind(b.roads.sens.tab$Med*100, h.roads.sens.tab$Med.pct*100), b, rbind(b.roads.sens.tab$Lcl*100, h.roads.sens.tab$Lcl.pct*100), angle=90, length=arrow.length)
@@ -1246,7 +1262,7 @@ arrows(b, rbind(b.roads.sens.tab$Med*100, h.roads.sens.tab$Med.pct*100), b, rbin
 mtext("b", at = -2, line = 2)
 
 name.arg = c("Low freq.", "*Ave. freq.", "High freq.")
-b <- barplot(rbind(b.climate.sens.tab$Med*100, h.climate.sens.tab$Med.pct*100), beside=T, col=c(browse.col, hunt.col), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
+b <- barplot(rbind(b.climate.sens.tab$Med*100, h.climate.sens.tab$Med.pct*100), beside=T, col=c(browse.col, hunt.col), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1, las = 1)
 axis(1, labels=F, tick=F)
 text(x=colMeans(b), y = y, srt= 45, adj = 1, labels= name.arg[1:6], xpd=T)
 arrows(b, rbind(b.climate.sens.tab$Med*100, h.climate.sens.tab$Med.pct*100), b, rbind(b.climate.sens.tab$Lcl*100, h.climate.sens.tab$Lcl.pct*100), angle=90, length=arrow.length)
@@ -1255,7 +1271,7 @@ mtext("c", at = -2, line = 2)
 
 
 name.arg = c("9.5 deer/yr", "*15 deer/yr", "20.5 deer/yr", "26 deer/yr")
-b <- barplot(rbind(b.diet.sens.tab$Med*100, h.diet.sens.tab$Med.pct*100), beside=T, col=c(browse.col, hunt.col), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
+b <- barplot(rbind(b.diet.sens.tab$Med*100, h.diet.sens.tab$Med.pct*100), beside=T, col=c(browse.col, hunt.col), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1, las = 1)
 axis(1, labels=F, tick=F)
 text(x=colMeans(b), y = y, srt= 45, adj = 1, labels= name.arg[1:6], xpd=T)
 arrows(b, rbind(b.diet.sens.tab$Med*100, h.diet.sens.tab$Med.pct*100), b, rbind(b.diet.sens.tab$Lcl*100, h.diet.sens.tab$Lcl.pct*100), angle=90, length=arrow.length)
@@ -1264,7 +1280,7 @@ mtext("d", at = -2, line = 2)
 
 
 name.arg = c("No harvest", "0% legal", "*20% legal cap", "30% legal cap", "No limit", "Extinct")
-b <- barplot(rbind(b.trap.sens.tab$Med*100, h.trap.sens.tab$Med.pct*100), beside=T, col=c(browse.col, hunt.col), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
+b <- barplot(rbind(b.trap.sens.tab$Med*100, h.trap.sens.tab$Med.pct*100), beside=T, col=c(browse.col, hunt.col), ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1, las = 1)
 axis(1, labels=F, tick=F)
 text(x=colMeans(b), y = y, srt= 45, adj = 1, labels= name.arg[1:7], xpd=T)
 arrows(b, rbind(b.trap.sens.tab$Med*100, h.trap.sens.tab$Med.pct*100), b, rbind(b.trap.sens.tab$Lcl*100, h.trap.sens.tab$Lcl.pct*100), angle=90, length=arrow.length)
@@ -1273,7 +1289,7 @@ mtext("e", at = -2, line = 2)
 
 
 name.arg = c("","Hunt no deer", "*Hunt regular")
-b <- barplot(c(NA, b.hunt.sens.tab$Med*100), space = c(0.5, 0.5), beside=T, col=browse.col, ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1)
+b <- barplot(c(NA, b.hunt.sens.tab$Med*100), space = c(0.5, 0.5), beside=T, col=browse.col, ylim=ylim, ylab="", xlim=c(0, max.group*3), width=1, las = 1)
 axis(1, labels=F, tick=F)
 text(x=b, y = y, srt= 45, adj = 1, labels= name.arg, xpd=T)
 arrows(b, c(NA, b.hunt.sens.tab$Med*100), b, c(NA, b.hunt.sens.tab$Lcl*100), angle=90, length=arrow.length)
@@ -1281,4 +1297,9 @@ arrows(b, c(NA, b.hunt.sens.tab$Med*100), b, c(NA, b.hunt.sens.tab$Ucl*100), ang
 mtext("f", at = -2, line = 2)
 
 mtext("Proportion (%)", side=2, line=1, outer=TRUE)
+
+
+
+dev.off()
+
 
