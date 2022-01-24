@@ -243,18 +243,18 @@ winter.sev 		= Scenario$climate										# frequency of severe winter, from scen
 
 ### Deer parameters
 
-rmax 				= 0.6												# maximum reproductive rate for deer
-theta 				= 2													# time lag in yrs for density dependence in deer population
+rmax 				= 0.6												      # maximum reproductive rate for deer
+theta 				= 2													    # time lag in yrs for density dependence in deer population
 bear.fawn 			= 0.46												# mean fawn prodation rate by bears
 bear.fawn.sd			= 0.023											# SE of fawn predation rate by bears
-bear.dd	 			= 0.5												# maximum amount of bear predation on fawns that can be additive
+bear.dd	 			= 0.5												    # maximum amount of bear predation on fawns that can be additive
 bear.adult 			= 0.03												# mean adult deer predation rate by bears
-bear.adult.se 		= 0.0015											# SE adult deer predation rate by bears
+bear.adult.se 		= 0.0015										# SE adult deer predation rate by bears
 
-if(Scenario$deer.harv ==TRUE){											# if deer hunting allowed at all...
-h = 0.012}else{ h = 0}													# baseline hunting rate of deer, from Person 1997
+if(Scenario$deer.harv ==TRUE){								# if deer hunting allowed at all...
+h = 0.012}else{ h = 0}												# baseline hunting rate of deer, from Person 1997
 
-start.deer.min 		= 0.5												# choose "floor" for deer start relative to carrynig capacity... 0-1 = possible range
+start.deer.min 		= 0.5												# choose "floor" for deer start relative to carrying capacity... 0-1 = possible range
 start.deer.max		= 1													# choose ceiling
 
 
@@ -339,21 +339,21 @@ pdf(paste(DirOut,Which.Scen,"wolf_deer_plot.pdf", sep="/"), height=6, width=6)
 		P.t.all = P.t.all[order(p.rand),]												        # stock packs randomely
 		#P.t.all = P.t.all[order(P.t.all$road.rank),]									  # stock packs in order of low to high road density
 		
-		for(p in 1:nrow(P.t.all)){														# loop to assign wolves to the population
-			if(p==1){accumulate = P.t.all$nstart[p]}else{								# lowest-roaded pack gets all its wolves
-			accumulate=c(accumulate, sum(P.t.all$nstart[1:p]))}							# count how many total wolves being assigned down the list
+		for(p in 1:nrow(P.t.all)){														          # loop to assign wolves to the population
+			if(p==1){accumulate = P.t.all$nstart[p]}else{							 	  # lowest-roaded pack gets all its wolves
+			accumulate=c(accumulate, sum(P.t.all$nstart[1:p]))}						# count how many total wolves being assigned down the list
 			}
 
-		P.t.all$accumulate = accumulate													# cumulative wolves assigned across packs
+		P.t.all$accumulate = accumulate													        # cumulative wolves assigned across packs
 		if(max(accumulate)>=pop.sum){too.much = min(which(accumulate>=pop.sum))}else{
-		too.much = 31}																	# which pack pushes the total pop above random start pop?
-		if(too.much <=1){too.much = 2}													# we need to fill at least 1 packs worth w/wolves
-		pack.marg = round(pop.sum -accumulate[too.much-1])  							# this pack will get a few wolves, just not all starting wolves
+		too.much = 31}																	                # which pack pushes the total pop above random start pop?
+		if(too.much <=1){too.much = 2}													        # we need to fill at least 1 packs worth w/wolves
+		pack.marg = round(pop.sum -accumulate[too.much-1])  						# this pack will get a few wolves, just not all starting wolves
 		if(pack.marg<1){pack.marg = 0}
-		P.t.all$nstart[too.much:nrow(P.t.all)] = 0										# no wolves above threshold, pack by pack
+		P.t.all$nstart[too.much:nrow(P.t.all)] = 0										  # no wolves above threshold, pack by pack
 		P.t.all$accumulate[too.much:nrow(P.t.all)] = 0									# no wolves above threshold, in cumulative pop
-		P.t.all$nstart[too.much] = pack.marg											# give marginal wolves to marginal pack		
-		if(pack.marg > 0) {P.t.all$accumulate[too.much] = 								# add marginal wolves to cumulative pop
+		P.t.all$nstart[too.much] = pack.marg											      # give marginal wolves to marginal pack		
+		if(pack.marg > 0) {P.t.all$accumulate[too.much] = 							# add marginal wolves to cumulative pop
 			P.t.all$accumulate[too.much - 1] + pack.marg	}								
 		P.t.all <- P.t.all[order(P.t.all$Pack_ID),]	
 		
@@ -366,34 +366,34 @@ pdf(paste(DirOut,Which.Scen,"wolf_deer_plot.pdf", sep="/"), height=6, width=6)
 					
 				for(i in 1:npack){																###################### loop through packs each pack, 1:npack, in year t	
 					
-					K.t = pack.k[i,t]															# deer K for time t, pack i
+					K.t = pack.k[i,t]															    # deer K for time t, pack i
 					road.t = pack.roads[i,t]													# roads for time t, pack i
 					pack.area = pack.areas[i]															
 			
 				##### initial wolf population size, from previous time-step
 					if(t==1){P.t = P.t.all$nstart[i]}										# get randomly-generated pack starts sizes, from above				
-					if(t==1 & P.t < 0){P.t = 0}												# truncate the number in pack i in year t to >= 0
-					if(t==1 & P.t > 18){P.t = 18}											# truncate the number in pack i in year t to <= 18
+					if(t==1 & P.t < 0){P.t = 0}												  # truncate the number in pack i in year t to >= 0
+					if(t==1 & P.t > 18){P.t = 18}											  # truncate the number in pack i in year t to <= 18
 					if(t>1){p.prev = data.frame(t(packs.time[i,,t-1]))}						# access the stored data for this pack from t-1
-					if(t>1){P.t = (as.numeric(p.prev$fall.wolf) 							# after year 1, wolf pack pop at start of interval t = ...
-					- as.numeric(p.prev$wolf.harv.tot) 										# fall walf pack pop in (t-1) minus wolf pack harvest (t-1)...
+					if(t>1){P.t = (as.numeric(p.prev$fall.wolf) 				# after year 1, wolf pack pop at start of interval t = ...
+					- as.numeric(p.prev$wolf.harv.tot) 									# fall walf pack pop in (t-1) minus wolf pack harvest (t-1)...
 					- as.numeric(p.prev$dispersers) 										# minus wolf pack dispersal (t-1)...
-					- as.numeric(p.prev$cmort) 												# minus wolf pack chronic mort (t-1)...
+					- as.numeric(p.prev$cmort) 												  # minus wolf pack chronic mort (t-1)...
 					+ as.numeric(p.prev$immigrants))}										# plus wolf pack immigrants (t-1)							
-					if(P.t <0){P.t = 0}														# no negative wolf numbers allowed
-					P.t = round(P.t, digits=0)												# no decimal wolf numbers allowed
+					if(P.t <0){P.t = 0}														      # no negative wolf numbers allowed
+					P.t = round(P.t, digits=0)												  # no decimal wolf numbers allowed
 
 				##### Initial deer K and pop size, from previous time-step
 					start.prop = runif(1, start.deer.min, start.deer.max)					# year 1 deer proximity to deer K = random prop btwn X and 1
 					alpha.start = runif(1, .5, 1)											# year 1 availability of deer to wolves = random prop btwn 0.5 and 1
-					if(t==1){alpha.t = runif(1, .5, 1)}										# after yr 1, avail. deer is rand proportion from .5 to 1
+					if(t==1){alpha.t = runif(1, .5, 1)}								# after yr 1, avail. deer is rand proportion from .5 to 1
 					if(t==1){U.t= start.prop*K.t}											# for t = 1, deer 
 					if(t>1){U.t = (as.numeric(p.prev$spring.deer) 							# after year 1, deer pop in pack i at start of interval t = ... 
 							+ as.numeric(p.prev$recruit.deer) 								# spring deer in pack area i plus deer recruits in pack area i...
 							- as.numeric(p.prev$hunt.deer)									# minus 	deer hunted in pack area i...
 							- as.numeric(p.prev$pred.deer) 									# minus deer predated in pack area i by wolves...
 							- as.numeric(p.prev$bear.deer))}								# minus adult deer predated in pack are i by bears, all in t-1
-					if(U.t<0){U.t=0}														# no negative deer numbers allowed
+					if(U.t<0){U.t=0}														      # no negative deer numbers allowed
 					U.t = round(U.t, digits=0)												# no decimal deer numbers allowed		
 		
 				##### Wolf predation on deer
@@ -422,24 +422,24 @@ pdf(paste(DirOut,Which.Scen,"wolf_deer_plot.pdf", sep="/"), height=6, width=6)
 					Rp.t = round(L.t, 0)														# recruitment depends on DD pup production, and DD pup survival
 
 				##### Deer population changes in year t
-					Pa.t = (2*P.t + Rp.t)/2													# average wolf population size for t, used for predation on deer
-					bear.fawn.t = betaval(bear.fawn, bear.fawn.sd)							# bear predation on fawns (DD)
-					if(DD.t < bear.dd){														# if deer pop at > 0.5 of K...
-						BF.t = bear.dd*bear.fawn.t}else{										# bear pred on fawns increasingly compensatory...
-						BF.t = DD.t*bear.fawn.t}												# otherwise (deer pop < 0.5 of K), bear pred on fawns is additive
+					Pa.t = (2*P.t + Rp.t)/2													   # average wolf population size for t, used for predation on deer
+					bear.fawn.t = betaval(bear.fawn, bear.fawn.sd)		 # bear predation on fawns (DD)
+					if(DD.t < bear.dd){														     # if deer pop at > 0.5 of K...
+						BF.t = bear.dd*bear.fawn.t}else{								 # bear pred on fawns increasingly compensatory...
+						BF.t = DD.t*bear.fawn.t}												 # otherwise (deer pop < 0.5 of K), bear pred on fawns is additive
 					BA.t = round(betaval(bear.adult, bear.adult.se)*U.t)						# predation rate of bears on adult deer
-					R.t = round((1-BF.t)*U.t*rmax*(1-(U.t/K.t)^theta))						# DD fawn recruitment (theta logistic eq.), after bear predation
+					R.t = round((1-BF.t)*U.t*rmax*(1-(U.t/K.t)^theta))	# DD fawn recruitment (theta logistic eq.), after bear predation
 					if(winter==1){R.t=0}														# if it's a severe winter, deer recruitment goes to zero
-					H.t = (U.t + R.t - BA.t)*h*(1 + 0.038*road.t)							# hunting ~ road length. No deer predation in here, hunting takes precedence		
+					H.t = (U.t + R.t - BA.t)*h*(1 + 0.038*road.t)				# hunting ~ road length. No wolf predation in here, hunting takes precedence		
 					if(H.t> (U.t + R.t - BA.t)){												# can't hunt more deer than exist (spring deer + recruits - bear pred adults)...
-						H.t= (U.t + R.t - CP.t*Pa.t - BA.t + 2)}								# but can hunt up to that number, but keep 2 deer  								
-					H.t = round(H.t, 0)														# no decimal deer allowed to be hunted
-					if(H.t<0){H.t=2}															# deer hunting cannot be < 2 
-					spring.deer = U.t 														# Deer numbers to remember for the start of the (next) time step	
+						H.t= (U.t + R.t - CP.t*Pa.t - BA.t + 2)}					# but can hunt up to that number, but keep 2 deer  								
+					H.t = round(H.t, 0)														      # no decimal deer allowed to be hunted
+					if(H.t<0){H.t=2}															      # deer hunting cannot be < 2 
+					spring.deer = U.t 														      # Deer numbers to remember for the start of the (next) time step	
 					if(spring.deer < 50){spring.deer = 50}			
 					
-					Deer.dt = U.t/pack.area													# Deer per km^2 per pack area
-					Deer.K.prop = U.t/K.t													# How close are deer to K?
+					Deer.dt = U.t/pack.area													   # Deer per km^2 per pack area
+					Deer.K.prop = U.t/K.t													     # How close are deer to K?
 					if(Deer.K.prop>=deer.high.K){browse=1}else{browse=0}					# Record if deer density is high enough for conifefer browsing effects
 					if(Deer.K.prop<=deer.low.K){recover=1}else{recover=0}					# Record if deer density is low enough for conifer recovery
 																	
